@@ -514,6 +514,13 @@ class ReaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectedRows, $allRows, 'There should be 3 rows, with equal length');
     }
 
+    /**
+     * @return void
+     */
+    public function testReadFileGeneratedByWpsOffice()
+    {
+        $allRows = $this->getAllRowsForFile('file_generated_by_wps.xlsx');
+    }
 
     /**
      * https://github.com/box/spout/issues/195
