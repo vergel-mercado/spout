@@ -288,7 +288,8 @@ class Style
 
     /**
      * Sets the background color
-     * @param $color
+     * @param $color ARGB color (@see Color
+     * @return Style
      */
     public function setBackgroundColor($color)
     {

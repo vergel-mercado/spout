@@ -253,25 +253,28 @@ class WriterWithStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertFirstChildHasAttributeEquals('1', $xfElement, 'alignment', 'wrapText');
     }
 
-    public function testDefaultBackgroundColor()
+    /**
+     * @return void
+     */
+    public function testAddBackgroundColor()
     {
         $fileName = 'test_default_background_color.xlsx';
         $dataRows = [
             ["defaultBgColor"],
         ];
-        $style = (new StyleBuilder())->setBackgroundColor()->build();
+        $style = (new StyleBuilder())->setBackgroundColor(Color::WHITE)->build();
         $this->writeToXLSXFile($dataRows, $fileName, $style);
         $fillsDomElement = $this->getXmlSectionFromStylesXmlFile($fileName, 'fills');
         $this->assertEquals(2, $fillsDomElement->getAttribute('count'), 'There should be 2 fills, including the default one.');
 
         $fillsElements = $fillsDomElement->getElementsByTagName('fill');
-        // The second fill//patternFill should have an attribute patternType="solid"
+
         $secondFillElement = $fillsElements->item(1);
-        $this->assertFirstChildHasAttributeEquals('solid', $secondFillElement, 'patternFill', 'patternType');
         $fgColor = $secondFillElement->getElementsByTagName('fgColor')->item(0)->getAttribute('rgb');
         $bgColor = $secondFillElement->getElementsByTagName('bgColor')->item(0)->getAttribute('rgb');
-        $this->assertEquals(Style::DEFAULT_BACKGROUND_COLOR, $fgColor, 'The foreground color should equal the default');
-        $this->assertEquals(Style::DEFAULT_BACKGROUND_COLOR, $bgColor, 'The foreground color should equal the default');
+
+        $this->assertEquals(Color::WHITE, $fgColor, 'The foreground color should equal the default');
+        $this->assertEquals(Color::WHITE, $bgColor, 'The foreground color should equal the default');
     }
 
     /**

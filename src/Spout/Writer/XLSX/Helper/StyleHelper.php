@@ -87,18 +87,22 @@ EOD;
         $registeredStyles = $this->getRegisteredStyles();
         $fillsCount = count($registeredStyles);
         $content = sprintf('<fills count="%d">', $fillsCount);
+
         foreach ($registeredStyles as $style) {
             if ($style->shouldApplyBackgroundColor()) {
+                $backgroundColor = $style->getBackgroundColor();
                 $content .= sprintf(
                     '<fill><patternFill patternType="solid"><fgColor rgb="%s"/><bgColor rgb="%s"/></patternFill></fill>',
-                    $style->getBackgroundColor(),
-                    $style->getBackgroundColor()
+                    $backgroundColor,
+                    $backgroundColor
                 );
             } else {
                 $content .= '<fill><patternFill patternType="none" /></fill>';
             }
         }
+
         $content .= '</fills>';
+
         return $content;
     }
 

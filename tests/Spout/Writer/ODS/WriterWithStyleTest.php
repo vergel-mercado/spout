@@ -113,7 +113,6 @@ class WriterWithStyleTest extends \PHPUnit_Framework_TestCase
             ->setFontItalic()
             ->setFontUnderline()
             ->setFontStrikethrough()
-            ->setBackgroundColor()
             ->build();
         $style2 = (new StyleBuilder())
             ->setFontSize(15)
@@ -133,7 +132,6 @@ class WriterWithStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertFirstChildHasAttributeEquals('italic', $customFont1Element, 'text-properties', 'fo:font-style');
         $this->assertFirstChildHasAttributeEquals('solid', $customFont1Element, 'text-properties', 'style:text-underline-style');
         $this->assertFirstChildHasAttributeEquals('solid', $customFont1Element, 'text-properties', 'style:text-line-through-style');
-        $this->assertFirstChildHasAttributeEquals('#' . Color::WHITE, $customFont1Element, 'table-cell-properties', 'fo:background-color');
 
         // Third font should contain data from the second created style
         $customFont2Element = $cellStyleElements[2];
@@ -243,21 +241,24 @@ class WriterWithStyleTest extends \PHPUnit_Framework_TestCase
         $this->assertFirstChildHasAttributeEquals('wrap', $customStyleElement, 'table-cell-properties', 'fo:wrap-option');
     }
 
-    public function testDefaultBackgroundStyle()
+    /**
+     * @return void
+     */
+    public function testAddBackgroundColor()
     {
         $fileName = 'test_default_background_style.ods';
         $dataRows = [
             ['defaultBgColor'],
         ];
 
-        $style = (new StyleBuilder())->setBackgroundColor()->build();
+        $style = (new StyleBuilder())->setBackgroundColor(Color::WHITE)->build();
         $this->writeToODSFile($dataRows, $fileName, $style);
 
         $styleElements = $this->getCellStyleElementsFromContentXmlFile($fileName);
         $this->assertEquals(2, count($styleElements), 'There should be 2 styles (default and custom)');
 
         $customStyleElement = $styleElements[1];
-        $this->assertFirstChildHasAttributeEquals('#' . Style::DEFAULT_BACKGROUND_COLOR, $customStyleElement, 'table-cell-properties', 'fo:background-color');
+        $this->assertFirstChildHasAttributeEquals('#' . Color::WHITE, $customStyleElement, 'table-cell-properties', 'fo:background-color');
     }
 
     /**
