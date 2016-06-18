@@ -137,10 +137,10 @@ class StyleBuilder
      *  Sets a background color
      *
      * @api
-     * @param $color
-     * @return $this
+     * @param $color ARGB color (@see Color)
+     * @return StyleBuilder 
      */
-    public function setBackgroundColor($color = Style::DEFAULT_BACKGROUND_COLOR)
+    public function setBackgroundColor($color)
     {
         $this->style->setBackgroundColor($color);
         return $this;
